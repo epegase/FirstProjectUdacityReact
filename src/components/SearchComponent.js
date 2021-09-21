@@ -1,22 +1,44 @@
 import React, { useState } from "react";
-import Book from "../components";
+import { Link } from "react-router-dom";
+import Book from "./Book";
 import * as BooksAPI from "../BooksAPI";
 
-const SearchComponent = ({ books, arrangeShelf }) => {
+const SearchComponent = ({ arrangeShelf }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [queryBooks, setQueryBooks] = useState([]);
+  const [error, setError] = useState(false);
+
   const handleSearch = (event) => {
+    const searchTerm = event.target.value;
     setSearchTerm(event.target.value);
+
     if (searchTerm) {
-      BooksAPI.search(searchTerm, 20).then((books) => {
-        return setQueryBooks({ queryBooks: books });
+      //search the list of books
+      BooksAPI.search(searchTerm.trim()).then((books) => {
+        /*if the list of books > 0, put the list of books
+        on state. Otherwise, set the value of error to true*/
+        if (books.length > 0) {
+          setQueryBooks(books);
+          setError(false);
+        } else {
+          setQueryBooks([]);
+          setError(true);
+        }
       });
+
+      // if query is empty, reset state to default
+    } else {
+      setQueryBooks([]);
+      setError(false);
     }
   };
+
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <button className="close-search">Close</button>
+        <Link className="close-search" to="/">
+          Close
+        </Link>
         <div className="search-books-input-wrapper">
           <input
             type="text"
@@ -27,16 +49,18 @@ const SearchComponent = ({ books, arrangeShelf }) => {
         </div>
       </div>
       <div className="search-books-results">
-        <ol className="books-grid">
-          {queryBooks.map((book) => (
-            <Book
-              book={book}
-              books={books}
-              key={book.id}
-              arrangeShelf={arrangeShelf}
-            />
-          ))}
-        </ol>
+        {queryBooks.length > 0 && (
+          <div>
+            <ol className="books-grid">
+              {queryBooks.map((book) => (
+                <Book book={book} key={book.id} arrangeShelf={arrangeShelf} />
+              ))}
+            </ol>
+          </div>
+        )}
+        {error && (
+          <h3>Your terms are not in authorized search terms. Try Again.</h3>
+        )}
       </div>
     </div>
   );

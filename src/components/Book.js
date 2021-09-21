@@ -1,7 +1,8 @@
 import React from "react";
-import BookShelfChanger from "../components";
+import BookShelfChanger from "./BookShelfChanger";
 
-// This component represent a book with all the data(props)
+/*This component represent a book 
+with all the data(props).*/
 
 const Book = ({ book, books, arrangeShelf }) => {
   return (
@@ -12,7 +13,11 @@ const Book = ({ book, books, arrangeShelf }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${book.imageLinks})`,
+            backgroundImage: `url(${
+              book.imageLinks
+                ? book.imageLinks.thumbnail
+                : book.imageLinks.smallThumbnail
+            })`,
           }}
         ></div>
         <BookShelfChanger

@@ -1,9 +1,9 @@
 import React from "react";
-import BookSection from "../components";
+import BookSection from "./BookSection";
 
-// This component represent a list of books
+/*This component represent a list of books.*/
 
-const BookList = (books, arrangeShelf) => {
+const BookList = ({ books, arrangeShelf }) => {
   const BookCategories = [
     { category: "currentlyReading", name: "Currently Reading " },
     { category: "wantToRead", name: "Want To Read" },

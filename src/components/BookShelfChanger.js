@@ -1,17 +1,14 @@
 import React from "react";
 
-const BookShelfChanger = ({ book, books, arrangeShelf }) => {
-  let currentShelf = "none";
-  for (let item of books) {
-    if (item.id === book.id) {
-      currentShelf = item.shelf;
-    }
-  }
+/*This component represent the control of a book, 
+to move a book for one shelf to another.*/
+
+const BookShelfChanger = ({ book, arrangeShelf }) => {
   return (
     <div className="book-shelf-changer">
       <select
         onChange={(event) => arrangeShelf(book, event.target.value)}
-        defaultValue={currentShelf}
+        defaultValue={book.shelf ? book.shelf : "none"}
       >
         <option value="move" disabled>
           Move to...

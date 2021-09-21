@@ -1,6 +1,8 @@
 import React from "react";
 import Book from "./Book";
 
+/*This component represent liste of books per shelf.*/
+
 const BookSection = ({ books, arrangeShelf }) => {
   return (
     <div>
@@ -8,8 +10,8 @@ const BookSection = ({ books, arrangeShelf }) => {
         {books.map((book) => (
           <Book
             book={book}
-            books={books}
             key={book.id}
+            books={books}
             arrangeShelf={arrangeShelf}
           />
         ))}

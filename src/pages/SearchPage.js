@@ -1,33 +1,10 @@
-import React, { useState, useEffect } from "react";
-import * as BooksAPI from "../BooksAPI";
+import React from "react";
 import SearchComponent from "../components/SearchComponent";
 
-const SearchPage = () => {
-  const [books, setBooks] = useState({});
-  useEffect(() => {
-    BooksAPI.getAll().then((books) => {
-      setBooks({ books });
-    });
-  }, []);
-
-  let arrangeShelf = (updatedCategory, newShelf) => {
-    BooksAPI.update(updatedCategory, newShelf).then((response) => {
-      updatedCategory.shelf = newShelf;
-
-      const updatedBooks = books.filter(
-        (book) => book.id !== updatedCategory.id
-      );
-      updatedBooks.push(updatedCategory);
-      setBooks({ books: updatedBooks });
-    });
-  };
-
+const SearchPage = ({ books, arrangeShelf }) => {
   return (
     <div className="list-books">
-      <div>
-        <h1>MyReads</h1>
-        <SearchComponent books={books} arrangeShelf={arrangeShelf} />
-      </div>
+      <SearchComponent books={books} arrangeShelf={arrangeShelf} />
     </div>
   );
 };
