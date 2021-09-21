@@ -14,9 +14,7 @@ const Book = ({ book, books, arrangeShelf }) => {
             width: 128,
             height: 193,
             backgroundImage: `url(${
-              book.imageLinks
-                ? book.imageLinks.thumbnail
-                : book.imageLinks.smallThumbnail
+              book.imageLinks ? book.imageLinks.thumbnail : ""
             })`,
           }}
         ></div>
