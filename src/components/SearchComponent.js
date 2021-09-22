@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Book from "./Book";
 import * as BooksAPI from "../BooksAPI";
 
-const SearchComponent = ({ arrangeShelf }) => {
+const SearchComponent = ({ books, arrangeShelf }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [queryBooks, setQueryBooks] = useState([]);
   const [error, setError] = useState(false);
@@ -14,11 +14,19 @@ const SearchComponent = ({ arrangeShelf }) => {
 
     if (searchTerm) {
       //search the list of books
-      BooksAPI.search(searchTerm.trim()).then((books) => {
+      BooksAPI.search(searchTerm.trim()).then((results) => {
         /*if the list of books > 0, put the list of books
         on state. Otherwise, set the value of error to true*/
-        if (books.length > 0) {
-          setQueryBooks(books);
+        if (results.length > 0) {
+          /* for every book resulted from search,
+          check if id of resulted book is equal to
+          id of one of books in prop. If yes,
+          update shelf*/
+          const NewShelfBooks = results.map((result) => {
+            result.shelf = addShelf(result);
+            return result;
+          });
+          setQueryBooks(NewShelfBooks);
           setError(false);
         } else {
           setQueryBooks([]);
@@ -30,6 +38,16 @@ const SearchComponent = ({ arrangeShelf }) => {
     } else {
       setQueryBooks([]);
       setError(false);
+    }
+
+    /*This function do this for a book given (parameter) :
+    - verify if the book given is in props.books.
+    - If this book is in props.book, he return the shelf of the book 
+    This function update the state of a book between
+    main page and search page*/
+    function addShelf(result) {
+      let hasShelf = books.filter((book) => book.id === result.id);
+      return hasShelf.length ? hasShelf[0].shelf : "none";
     }
   };
 
